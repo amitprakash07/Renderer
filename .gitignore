@@ -2,7 +2,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -29,3 +28,6 @@
 
 #TempFiles
 /Temp
+
+# Explicitly temporary files
+/.vs
