@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{abfa35b2-6ff1-47a7-ba8a-4e1ada010c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shading">
+      <UniqueIdentifier>{13e69d88-e6e8-49db-bcd8-f3504978f4cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{05fba45d-0db8-4c33-8643-64da77c59d06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sampler">
+      <UniqueIdentifier>{8ffebff0-9d49-4c38-93cc-d9cc0f48fea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RayIntersection">
+      <UniqueIdentifier>{ccf571aa-4a15-46f5-a293-6d8b3aeacdae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\main.h" />
+    <ClInclude Include="Source\Renderer.h" />
+    <ClInclude Include="Source\HemiSphereSampler.h">
+      <Filter>Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RandomSampler.h">
+      <Filter>Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Sample.h">
+      <Filter>Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Sampler.h">
+      <Filter>Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SphereSampler.h">
+      <Filter>Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CircleSampler.h">
+      <Filter>Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RayIntersection.h">
+      <Filter>RayIntersection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\xmlload.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\viewport.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\texture.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\objects.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LightColor.h">
+      <Filter>Shading</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\lights.h">
+      <Filter>Shading</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\materials.h">
+      <Filter>Shading</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\FrameTime.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\TimeHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Maths.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhotonTrace.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\HemiSphereSampler.cpp">
+      <Filter>Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RandomSampler.cpp">
+      <Filter>Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sample.cpp">
+      <Filter>Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sampler.cpp">
+      <Filter>Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SphereSampler.cpp">
+      <Filter>Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CircleSampler.cpp">
+      <Filter>Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BoxIntersection.cpp">
+      <Filter>RayIntersection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BVHTraversal.cpp">
+      <Filter>RayIntersection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlaneIntersection.cpp">
+      <Filter>RayIntersection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SphereIntersection.cpp">
+      <Filter>RayIntersection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TriangleIntersection.cpp">
+      <Filter>RayIntersection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\xmlload.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\viewport.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\texture.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lights.cpp">
+      <Filter>Shading</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Material.cpp">
+      <Filter>Shading</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\utils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\FrameTime.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhotonTrace.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Time\TimeHelper.inl">
+      <Filter>Utils</Filter>
+    </None>
+  </ItemGroup>
+</Project>

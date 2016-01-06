@@ -1,0 +1,100 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{B103EA03-8082-4E25-AE30-CA4AE3893051}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{1EE6B617-07D4-4C9A-8540-069D028D55BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathTracer", "Code\Internal\PathTracer\PathTracer.vcxproj", "{41AB0DE0-7AB6-4273-8D22-3C72F6909320}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cyCodeBase", "cyCodeBase", "{DBB7E107-C55E-4ED6-934D-47498F9F67BF}"
+	ProjectSection(SolutionItems) = preProject
+		Code\External\Includes\cyCodeBase\cyBVH.h = Code\External\Includes\cyCodeBase\cyBVH.h
+		Code\External\Includes\cyCodeBase\cyColor.h = Code\External\Includes\cyCodeBase\cyColor.h
+		Code\External\Includes\cyCodeBase\cyIrradianceMap.h = Code\External\Includes\cyCodeBase\cyIrradianceMap.h
+		Code\External\Includes\cyCodeBase\cyMatrix2.h = Code\External\Includes\cyCodeBase\cyMatrix2.h
+		Code\External\Includes\cyCodeBase\cyMatrix3.h = Code\External\Includes\cyCodeBase\cyMatrix3.h
+		Code\External\Includes\cyCodeBase\cyMatrix4.h = Code\External\Includes\cyCodeBase\cyMatrix4.h
+		Code\External\Includes\cyCodeBase\cyPhotonMap.h = Code\External\Includes\cyCodeBase\cyPhotonMap.h
+		Code\External\Includes\cyCodeBase\cyPoint.h = Code\External\Includes\cyCodeBase\cyPoint.h
+		Code\External\Includes\cyCodeBase\cyTriMesh.h = Code\External\Includes\cyCodeBase\cyTriMesh.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Freeglut", "Freeglut", "{4266FC01-2702-45CD-8EF4-F1B821463433}"
+	ProjectSection(SolutionItems) = preProject
+		Code\External\Includes\Freeglut\GL\freeglut.h = Code\External\Includes\Freeglut\GL\freeglut.h
+		Code\External\Includes\Freeglut\GL\freeglut_ext.h = Code\External\Includes\Freeglut\GL\freeglut_ext.h
+		Code\External\Includes\Freeglut\GL\freeglut_std.h = Code\External\Includes\Freeglut\GL\freeglut_std.h
+		Code\External\Includes\Freeglut\GL\glut.h = Code\External\Includes\Freeglut\GL\glut.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tinyXML", "tinyXML", "{220F2945-DD63-40DB-BFF0-E321A2A5F914}"
+	ProjectSection(SolutionItems) = preProject
+		Code\External\Includes\tinyxml\tinystr.cpp = Code\External\Includes\tinyxml\tinystr.cpp
+		Code\External\Includes\tinyxml\tinystr.h = Code\External\Includes\tinyxml\tinystr.h
+		Code\External\Includes\tinyxml\tinyxml.cpp = Code\External\Includes\tinyxml\tinyxml.cpp
+		Code\External\Includes\tinyxml\tinyxml.h = Code\External\Includes\tinyxml\tinyxml.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MonteCarloGI", "Code\Internal\MonteCarloGI\MonteCarloGI.vcxproj", "{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhotonMapping", "Code\Internal\PhotonMapping\PhotonMapping.vcxproj", "{C109E5A1-5903-4E11-B3F1-795BC52F609C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhotonMapVisualizer", "Code\Internal\PhotonMapVisualizer\PhotonMapVisualizer.vcxproj", "{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Debug|x64.ActiveCfg = Debug|x64
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Debug|x64.Build.0 = Debug|x64
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Debug|x86.ActiveCfg = Debug|Win32
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Debug|x86.Build.0 = Debug|Win32
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Release|x64.ActiveCfg = Release|x64
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Release|x64.Build.0 = Release|x64
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Release|x86.ActiveCfg = Release|Win32
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320}.Release|x86.Build.0 = Release|Win32
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Debug|x64.ActiveCfg = Debug|x64
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Debug|x64.Build.0 = Debug|x64
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Debug|x86.ActiveCfg = Debug|Win32
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Debug|x86.Build.0 = Debug|Win32
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Release|x64.ActiveCfg = Release|x64
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Release|x64.Build.0 = Release|x64
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Release|x86.ActiveCfg = Release|Win32
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E}.Release|x86.Build.0 = Release|Win32
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Debug|x64.ActiveCfg = Debug|x64
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Debug|x64.Build.0 = Debug|x64
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Debug|x86.ActiveCfg = Debug|Win32
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Debug|x86.Build.0 = Debug|Win32
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Release|x64.ActiveCfg = Release|x64
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Release|x64.Build.0 = Release|x64
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Release|x86.ActiveCfg = Release|Win32
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C}.Release|x86.Build.0 = Release|Win32
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Debug|x64.ActiveCfg = Debug|x64
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Debug|x64.Build.0 = Debug|x64
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Debug|x86.ActiveCfg = Debug|Win32
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Debug|x86.Build.0 = Debug|Win32
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Release|x64.ActiveCfg = Release|x64
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Release|x64.Build.0 = Release|x64
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Release|x86.ActiveCfg = Release|Win32
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{41AB0DE0-7AB6-4273-8D22-3C72F6909320} = {1EE6B617-07D4-4C9A-8540-069D028D55BD}
+		{DBB7E107-C55E-4ED6-934D-47498F9F67BF} = {B103EA03-8082-4E25-AE30-CA4AE3893051}
+		{4266FC01-2702-45CD-8EF4-F1B821463433} = {B103EA03-8082-4E25-AE30-CA4AE3893051}
+		{220F2945-DD63-40DB-BFF0-E321A2A5F914} = {B103EA03-8082-4E25-AE30-CA4AE3893051}
+		{D3CB6637-1F08-4CBD-A67D-5184CA469E6E} = {1EE6B617-07D4-4C9A-8540-069D028D55BD}
+		{C109E5A1-5903-4E11-B3F1-795BC52F609C} = {1EE6B617-07D4-4C9A-8540-069D028D55BD}
+		{CA75C074-D33E-48E8-BA49-007DDE7F0BBF} = {1EE6B617-07D4-4C9A-8540-069D028D55BD}
+	EndGlobalSection
+EndGlobal

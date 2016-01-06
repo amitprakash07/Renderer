@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <IncludesDir>$(SolutionDir)Code\External\Includes</IncludesDir>
+    <LibDir>$(SolutionDir)Code\External\Libraries</LibDir>
+    <TempDir>$(SolutionDir)Temp\$(Configuration)</TempDir>
+    <RendererExecutable>$(TempDir)\RendererExecutable\$(ProjectName)\</RendererExecutable>
+    <Assets>$(SolutionDir)Assets</Assets>
+    <IntermmediateDir>$(TempDir)\intermediates\$(ProjectName)\</IntermmediateDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>$(TempDir)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(IncludesDir)\cyCodeBase;$(IncludesDir)\Freeglut;$(IncludesDir)\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;tinyxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="IncludesDir">
+      <Value>$(IncludesDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="LibDir">
+      <Value>$(LibDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="TempDir">
+      <Value>$(TempDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="RendererExecutable">
+      <Value>$(RendererExecutable)</Value>
+    </BuildMacro>
+    <BuildMacro Include="Assets">
+      <Value>$(Assets)</Value>
+    </BuildMacro>
+    <BuildMacro Include="IntermmediateDir">
+      <Value>$(IntermmediateDir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
