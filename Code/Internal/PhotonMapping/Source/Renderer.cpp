@@ -7,13 +7,13 @@
 #include "cyPhotonMap.h"
 
 
-#define MIN_SAMPLE_COUNT 4
-#define MAX_SAMPLE_COUNT 4
+#define MIN_SAMPLE_COUNT 8
+#define MAX_SAMPLE_COUNT 16
 #define MIN_VARIANCE 0.0001
 #define MAX_VARIANCE 0.001
 #define GI_SAMPLE 10
-#define GI_BOUNCE_COUNT 5
-#define REFLECTION_BOUNCE_COUNT 3
+#define GI_BOUNCE_COUNT 10
+#define REFLECTION_BOUNCE_COUNT 10
 #include <iostream>
 #define THREADCOUNT 6
 

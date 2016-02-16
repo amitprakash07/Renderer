@@ -158,6 +158,7 @@ int main(int argc, char **argv)
 	glutInit(&argc,argv);
 
 	char defaultFileName[] = "photonmap.dat";
+	//char defaultFileName[] = "causticMap.dat";
 	char *fname = defaultFileName;
 	if ( argc > 1 ) {
 		fname = argv[1];

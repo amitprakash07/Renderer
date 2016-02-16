@@ -46,6 +46,7 @@ public:
 
 	// Photon Extensions
 	virtual bool IsPhotonSurface(int subMtlID=0) const override { return diffuse.GetColor().Gray() > 0; }	// if this method returns true, the photon will be stored
+	virtual bool IsSpecular()const override;
 	virtual bool RandomPhotonBounce(Ray &r, Color &c, const HitInfo &hInfo) const override;	// if this method returns true, a new photon with the given direction and color will be traced
 
 private:

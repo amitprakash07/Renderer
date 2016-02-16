@@ -57,6 +57,20 @@ Color PointLight::Illuminate(const Point3& p, const Point3& N) const
 
 Ray PointLight::RandomPhoton() const
 {
+	//Ray photonRay;
+	//Point3 randomPhotonDirection = Point3(0.0f, 0.0f, 0.0f);
+	//photonRay.p = position; //photon origin
+	//Point3 direction = Point3(0.0f, 0.0f, 0.0f);
+	//do
+	//{
+	//	direction.x = getRandomNumber(0, 1);
+	//	direction.y = getRandomNumber(0, 1);
+	//	direction.z = getRandomNumber(0, 1);
+	//} while (direction.LengthSquared() > 1);
+	//direction += position;
+	//photonRay.dir = direction.GetNormalized();
+	//return photonRay;
+
 	Ray photonRay;
 	SphereSampler sphereSampler = SphereSampler(2,2,1);
 	sphereSampler.generateSamples();

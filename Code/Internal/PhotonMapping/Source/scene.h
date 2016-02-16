@@ -300,7 +300,7 @@ public:
 	// hInfo: hit information for the point that is being shaded, lights: the light list,
 	// bounceCount: permitted number of additional bounces for reflection and refraction.
 	virtual Color Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lights, int bounceCount, int gi_bounceCount = 0) const=0;
-
+	virtual bool IsSpecular() const { return true; }
 	virtual void SetViewportMaterial(int subMtlID=0) const {}	// used for OpenGL display
 
 	// Photon Extensions
@@ -427,7 +427,6 @@ public:
 		float y = dir.y / den;
 		return Sample( Point3(0.5f,0.5f,0.0f) + z*(x*Point3(0.5f,0.5f,0) + y*Point3(-0.5f,0.5f,0)) );
 	}
-
 };
 
 //-------------------------------------------------------------------------------

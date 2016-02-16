@@ -5,10 +5,14 @@
 #include "HemiSphereSampler.h"
 #include "utils.h"
 #include "cyPhotonMap.h"
+#include <algorithm>
+#include <vector>
+
 
 #define MONTECARLO_GI 1
 #define PATH_TRACING 0
-#define GI_ALGO PATH_TRACING
+#define GI_ALGO MONTECARLO_GI
+#include <map>
 
 extern Node rootNode;
 extern TexturedColor environment;
@@ -19,6 +23,8 @@ Point3 getRefractionVector(Point3 view, Point3 normal, float n1 = 1, float n2 = 
 Point3 getReflectionVector(Point3 view, Point3 normal);
 Point3 getPerturbedNormal(Point3 normal, Point3 hitPoint, float i_glossiness);
 Point3 getRandomDirectionOnHemiSphere(Point3 normal, Point3 hitPoint, float i_glossiness);
+
+
 float addColorComp(Color i_color);
 float averageColorComp(Color i_color);
 float maxColorComp(Color i_color);
@@ -31,6 +37,8 @@ enum BOUNCE_TYPE
 	REFRACTION = 3,
 	UNKNOWN = 4
 };
+
+void sortLists(float*,BOUNCE_TYPE*, int);
 
 Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lights, int reflection_bounceCount, int gi_bounceCount) const
 {
@@ -48,20 +56,20 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 
 	for (int i = 0; i < lights.size(); i++)
 	{
-		/*Color lightColor = lights[i]->Illuminate(hInfo.p, hInfo.N);
-		if (lightColor != noColor)
+		Color lightColor = lights[i]->Illuminate(hInfo.p, hInfo.N);
+		/*if (lightColor != noColor)
 		{*/
 			if (lights[i]->IsAmbient())
 			{
-				//ambientComp += ambientComponent(lights[i], lightColor, hInfo, diffuse.Sample(hInfo.uvw));
+				ambientComp = ambientComponent(lights[i], lightColor, hInfo, diffuse.Sample(hInfo.uvw));
 			}
 			else
 			{
+				//lightColor.ClampMinMax();
 				Point3 rayDir = ray.dir;
-				globalPhotonMap.EstimateIrradiance<100>(diffuseComp, rayDir, 2.0f, hInfo.p, &hInfo.N);
-				//diffuseComp += diffuseComponent(lights[i], lightColor, hInfo, diffuse.Sample(hInfo.uvw));
-				specularComp += specularComponent(lights[i], diffuseComp, viewDirection, hInfo, specular.Sample(hInfo.uvw), glossiness);
-
+				globalPhotonMap.EstimateIrradiance<50>(lightColor, rayDir, 2.0f, hInfo.p, &hInfo.N);
+				diffuseComp = diffuseComponent(lights[i], lightColor, hInfo, diffuse.Sample(hInfo.uvw));
+				specularComp = specularComponent(lights[i], lightColor, viewDirection, hInfo, specular.Sample(hInfo.uvw), glossiness);
 			}
 		//}
 	}
@@ -84,8 +92,9 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 		if(TraceRay(&rootNode, refractionRay, refractionRayHit, hitside))
 		{
 			Point3 refractionDir = refractionRay.dir;
-			globalPhotonMap.EstimateIrradiance<100>(refractiveComp, refractionDir, 2.0f, refractionRayHit.p, &refractionRayHit.N);
-			//refractiveComp = refraction.Sample(hInfo.uvw) * refractionRayHit.node->GetMaterial()->Shade(refractionRay, refractionRayHit, lights, --reflection_bounceCount);
+			refractiveComp += refractionRayHit.node->GetMaterial()->Shade(refractionRay, refractionRayHit, 
+				lights, --reflection_bounceCount);
+			refractiveComp *= refraction.Sample(hInfo.uvw);
 		}
 		else
 		{
@@ -116,10 +125,9 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 		//--reflection_bounceCount;
 		if (TraceRay(&rootNode, reflectionViewVector, reflectionRayHit, HIT_FRONT))
 		{
-			globalPhotonMap.EstimateIrradiance<100>(fromReflection, reflectionViewVector.dir, 2.0f, reflectionRayHit.p, &reflectionRayHit.N);
-			/*fromReflection = reflectionRayHit.node->GetMaterial()->Shade(reflectionViewVector, 
-				reflectionRayHit, lights, --reflection_bounceCount);*/
-			reflectiveComp += reflectionTotal * fromReflection;
+			fromReflection += reflectionRayHit.node->GetMaterial()->Shade(reflectionViewVector, 
+				reflectionRayHit, lights, --reflection_bounceCount);
+			reflectiveComp = reflectionTotal * fromReflection;
 		}
 		else
 		{
@@ -167,38 +175,37 @@ Color MtlBlinn::Shade(const Ray &ray, const HitInfo &hInfo, const LightList &lig
 	}
 	else
 	{
-		//if (kd != noColor && gi_bounceCount > 0)
-		//{
-		//	HemiSphereSampler giHemiSampler = HemiSphereSampler(__gi_sampleCount, __gi_sampleCount, 1);
-		//	giHemiSampler.generateSamples();
-		//	Point3 randomDirectionAtHitPoint = Point3(0.0f, 0.0f, 0.0f);
-		//	HitInfo diffuseReflectionHitInfo;
-		//	Ray diffuseReflectionRay;
-		//	
-		//	randomDirectionAtHitPoint = giHemiSampler.getSample(getRandomNumber(0, giHemiSampler.getCurrentSampleCount())).getOffset();
-		//	diffuseReflectionRay.p = hInfo.p;
-		//	Point3 u = Point3(0.0f, 0.0f, 0.0f);
-		//	Point3 v = Point3(0.0f, 0.0f, 0.0f);
-		//	Point3 w = Point3(0.0f, 0.0f, 0.0f);
-		//	w = hInfo.N;
-		//	getOrthoNormalBasisVector(w, u, v);
-		//	diffuseReflectionRay.dir = randomDirectionAtHitPoint.x * u +
-		//		randomDirectionAtHitPoint.y * v +
-		//		randomDirectionAtHitPoint.z *w;
-		//	
-		//	diffuseReflectionHitInfo.Init();
-		//	if (TraceRay(&rootNode, diffuseReflectionRay, diffuseReflectionHitInfo, HIT_FRONT))
-		//	{
-		//		globalPhotonMap.EstimateIrradiance<10>(fromReflection, diffuseReflectionRay.dir, 2.0f, diffuseReflectionHitInfo.p, &diffuseReflectionHitInfo.N);
-		//		/*diffuseReflection = diffuseReflectionHitInfo.node->GetMaterial()->Shade(diffuseReflectionRay,
-		//			diffuseReflectionHitInfo, lights, 0, gi_bounceCount - 1);	*/			
-		//	}
-		//	else
-		//	{
-		//		diffuseReflection = environment.SampleEnvironment(diffuseReflectionRay.dir);
-		//	}
-		//	diffuseReflection = diffuseReflection * kd ;
-		//}
+		if (kd != noColor && gi_bounceCount > 0)
+		{
+			HemiSphereSampler giHemiSampler = HemiSphereSampler(__gi_sampleCount, __gi_sampleCount, 1);
+			giHemiSampler.generateSamples();
+			Point3 randomDirectionAtHitPoint = Point3(0.0f, 0.0f, 0.0f);
+			HitInfo diffuseReflectionHitInfo;
+			Ray diffuseReflectionRay;
+			
+			randomDirectionAtHitPoint = giHemiSampler.getSample(getRandomNumber(0, giHemiSampler.getCurrentSampleCount())).getOffset();
+			diffuseReflectionRay.p = hInfo.p;
+			Point3 u = Point3(0.0f, 0.0f, 0.0f);
+			Point3 v = Point3(0.0f, 0.0f, 0.0f);
+			Point3 w = Point3(0.0f, 0.0f, 0.0f);
+			w = hInfo.N;
+			getOrthoNormalBasisVector(w, u, v);
+			diffuseReflectionRay.dir = randomDirectionAtHitPoint.x * u +
+				randomDirectionAtHitPoint.y * v +
+				randomDirectionAtHitPoint.z *w;
+			
+			diffuseReflectionHitInfo.Init();
+			if (TraceRay(&rootNode, diffuseReflectionRay, diffuseReflectionHitInfo, HIT_FRONT))
+			{
+				diffuseReflection += diffuseReflectionHitInfo.node->GetMaterial()->Shade(diffuseReflectionRay,
+					diffuseReflectionHitInfo, lights, 0, gi_bounceCount - 1);	
+				diffuseReflection = diffuseReflection * kd;
+			}
+			else
+			{
+				diffuseReflection = environment.SampleEnvironment(diffuseReflectionRay.dir);
+			}			
+		}
 	}
 			
 	return (ambientComp + diffuseComp + specularComp+ reflectiveComp + refractiveComp + diffuseReflection);
@@ -218,7 +225,29 @@ bool MtlBlinn::RandomPhotonBounce(Ray& r, Color& c, const HitInfo& hInfo) const
 	Color refractionColor = refraction.Sample(hInfo.uvw);
 	Color reflectionColor = reflection.Sample(hInfo.uvw);
 
-	if (addColorComp(diffuseColor) > 1.0f)
+	float averageDiffuse = averageColorComp(diffuseColor);
+	float averageReflectance = averageColorComp(reflectionColor);
+	float averageTranmittance = averageColorComp(refractionColor);
+	float summedAverage = averageDiffuse + averageReflectance + averageTranmittance;
+	
+	float randomProbability = getRandomNumber(0, 1) * summedAverage;
+	
+	
+	float averageList[] = { averageDiffuse,averageReflectance,averageTranmittance };
+	BOUNCE_TYPE bounceList[] = { DIFFUSE_REFLECTION, SPECULAR_REFLECTION, REFRACTION };
+	sortLists(averageList, bounceList,3);
+
+	if (randomProbability > 0 && randomProbability <= averageList[0])
+		photonBounceType = bounceList[0];
+	else if (randomProbability > averageList[0] && randomProbability <= averageList[0] + averageList[1])
+		photonBounceType = bounceList[1];
+	else if (randomProbability > averageList[0] + averageList[1] && randomProbability <= averageList[2])
+		photonBounceType = bounceList[2];
+	else
+		photonBounceType = ABSORPTION;
+
+
+	/*if (addColorComp(diffuseColor) > 1.0f)
 		diffuseProbability = averageColorComp(diffuseColor);
 	else
 		diffuseProbability = maxColorComp(diffuseColor);
@@ -245,7 +274,7 @@ bool MtlBlinn::RandomPhotonBounce(Ray& r, Color& c, const HitInfo& hInfo) const
 	if (finalProbability == transmittProbability)
 		photonBounceType = REFRACTION;
 	if (finalProbability == absorptionProbability)
-		photonBounceType = ABSORPTION;
+		photonBounceType = ABSORPTION;*/
 	
 	switch(photonBounceType)
 	{
@@ -253,18 +282,18 @@ bool MtlBlinn::RandomPhotonBounce(Ray& r, Color& c, const HitInfo& hInfo) const
 		photonBounce = true;
 		r.dir = getRandomDirectionOnHemiSphere(hInfo.N, hInfo.p, 1.0f);
 		r.p = hInfo.p;
-		c = (c*diffuseColor) / diffuseProbability;
+		c = (c*diffuseColor) / averageDiffuse ;
 		break;
 	case SPECULAR_REFLECTION:
 		photonBounce = true;
 		r.dir = getReflectionVector(-r.dir, hInfo.N);
 		r.p = hInfo.p;
-		c = (c*reflectionColor) / reflectionProbability;
+		c = (c*reflectionColor) / averageReflectance ;
 		break;
 	case REFRACTION:
 		r.dir = getRefractionVector(-r.dir, hInfo.N, 1, ior);
 		r.p = hInfo.p;
-		c = (c*refractionColor) / transmittProbability;
+		c = (c*refractionColor) / averageTranmittance ;
 		photonBounce = true;
 		break;
 	case ABSORPTION:
@@ -275,6 +304,30 @@ bool MtlBlinn::RandomPhotonBounce(Ray& r, Color& c, const HitInfo& hInfo) const
 		break;
 	}
 	return photonBounce;
+}
+
+void sortLists(float* i_averageList, BOUNCE_TYPE *i_bounceList, int i_Size)
+{
+	for (int i = 0; i < i_Size; i++)
+	{
+		int min = i;
+		for (int j = i + 1; j < i_Size; j++)
+		{
+			if (i_averageList[min] > i_averageList[j])
+			{
+				min = j;
+			}
+		}
+		if(i !=min)
+		{
+			float temp = i_averageList[i];
+			i_averageList[i] = i_averageList[min];
+			i_averageList[min] = temp;
+			BOUNCE_TYPE tempBounce = i_bounceList[i];
+			i_bounceList[i] = i_bounceList[min];
+			i_bounceList[min] = tempBounce;
+		}
+	}
 }
 
 Point3 getRefractionVector(Point3 view, Point3 normal, float n1, float n2)
@@ -318,7 +371,7 @@ Point3 getPerturbedNormal(Point3 normal, Point3 hitPoint, float i_glossiness)
 
 Point3 getRandomDirectionOnHemiSphere(Point3 normal, Point3 hitPoint, float radius)
 {
-	SphereSampler sphereSampler = SphereSampler(1, 2, radius);
+	/*SphereSampler sphereSampler = SphereSampler(1, 2, radius);
 	sphereSampler.generateSamples();
 	Point3 randomOffset = sphereSampler.getSample(getRandomNumber(0, sphereSampler.getCurrentSampleCount())).getOffset();
 	Point3 u = Point3(0.0f, 0.0f, 0.0f);
@@ -327,7 +380,19 @@ Point3 getRandomDirectionOnHemiSphere(Point3 normal, Point3 hitPoint, float radi
 	w = normal;
 	getOrthoNormalBasisVector(w, u, v);
 	Point3 samplePoint = randomOffset.x * u + randomOffset.y * v + randomOffset.z * w;
+	return (normal + samplePoint).GetNormalized();*/
+
+	HemiSphereSampler hemiSphereSampler = HemiSphereSampler(1, 2, radius);
+	hemiSphereSampler.generateSamples();
+	Point3 randomOffset = hemiSphereSampler.getSample(getRandomNumber(0, hemiSphereSampler.getCurrentSampleCount())).getOffset();
+	Point3 u = Point3(0.0f, 0.0f, 0.0f);
+	Point3 v = Point3(0.0f, 0.0f, 0.0f);
+	Point3 w = Point3(0.0f, 0.0f, 0.0f);
+	w = normal;
+	getOrthoNormalBasisVector(w, u, v);
+	Point3 samplePoint = randomOffset.x * u + randomOffset.y * v + randomOffset.z * w;
 	return (normal + samplePoint).GetNormalized();
+	//return (hitPoint + randomOffset);
 }
 
 float addColorComp(Color i_color)
@@ -344,4 +409,18 @@ float maxColorComp(Color i_color)
 {
 	return max(i_color.r, max(i_color.g, i_color.b));
 }
+
+bool MtlBlinn::IsSpecular() const
+{
+	Color noColor = Color(0.0f);
+	if (specular.GetColor() != noColor)
+		return true;
+	return false;
+}
+
+
+
+
+
+
 
